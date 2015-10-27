@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/jose/Escritorio/MarioBros/core/build/libs/core-1.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9082596da0177f0047418fe9d5793f01bedc6f68">
+        <dex dex="/home/jose/Escritorio/MarioBros/android/build/intermediates/pre-dexed/debug/core-1.0-5e971ad1f114e0681848dd45abb8ac51a9f0491d.jar" />
+    </item>
+
+</items>
