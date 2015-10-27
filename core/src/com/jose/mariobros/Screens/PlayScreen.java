@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jose.mariobros.MarioBros;
 import com.jose.mariobros.Scenes.Hud;
+import com.jose.mariobros.Sprites.Mario;
 
 /**
  * Created by brentaureli on 8/14/15.
@@ -46,6 +47,8 @@ public class PlayScreen implements Screen{
     private World world;
     private Box2DDebugRenderer b2dr;
 
+    private Mario player;
+
     public PlayScreen(MarioBros game){
         this.game = game;
         //create cam used to follow mario through cam world
@@ -65,8 +68,10 @@ public class PlayScreen implements Screen{
         //initially set our gamcam to be centered correctly at the start of of map
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
+
+        player = new Mario(world, this);
 
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -148,6 +153,8 @@ public class PlayScreen implements Screen{
     public void update(float dt){
         //handle user input first
         handleInput(dt);
+
+        world.step(1 / 60f, 6, 2);
 
         //update our gamecam with correct coordinates after changes
         gamecam.update();
