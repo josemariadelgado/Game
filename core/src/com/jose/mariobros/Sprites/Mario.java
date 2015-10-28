@@ -98,6 +98,7 @@ public class Mario extends Sprite {
             runningRight = false;
 
         }
+
         else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
             region.flip(true, false);
             runningRight = true;
@@ -109,7 +110,6 @@ public class Mario extends Sprite {
         return region;
 
     }
-
 
     public State getState(){
         if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING))
@@ -130,7 +130,10 @@ public class Mario extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(5 / MarioBros.PPM);
+        shape.setRadius(6 / MarioBros.PPM);
+        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
+        fdef.filter.maskBits = MarioBros.DEFAULT_BIT | MarioBros.COIN_BIT | MarioBros.BRICK_BIT;
+
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
