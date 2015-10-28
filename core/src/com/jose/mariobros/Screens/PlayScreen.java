@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -54,6 +55,8 @@ public class PlayScreen implements Screen{
 
     private Mario player;
 
+    private Music music;
+
     public PlayScreen(MarioBros game){
         atlas = new TextureAtlas("Mario_and_Enemies.pack");
 
@@ -83,6 +86,11 @@ public class PlayScreen implements Screen{
         player = new Mario(world, this);
 
         world.setContactListener(new WorldContactListener());
+
+        music = MarioBros.manager.get("audio/music/mario_music.ogg", Music.class);
+        music.setLooping(true);
+        music.setVolume(0.3f);
+        music.play();
 
     }
 
