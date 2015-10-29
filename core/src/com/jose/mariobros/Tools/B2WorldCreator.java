@@ -9,16 +9,23 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.jose.mariobros.MarioBros;
-import com.jose.mariobros.Sprites.Brick;
-import com.jose.mariobros.Sprites.Coin;
+import com.jose.mariobros.Screens.PlayScreen;
+import com.jose.mariobros.Sprites.Enemies.Goomba;
+import com.jose.mariobros.Sprites.TileObjects.Brick;
+import com.jose.mariobros.Sprites.TileObjects.Coin;
 
 /**
  * Created by jose on 27/10/15.
  */
 public class B2WorldCreator {
-    public B2WorldCreator(World world, TiledMap map) {
+    private Array<Goomba> goombas;
 
+    public B2WorldCreator(PlayScreen screen){
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
+        //create body and fixture variables
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -33,7 +40,7 @@ public class B2WorldCreator {
 
             body = world.createBody(bdef);
 
-            shape.setAsBox((rect.getWidth() / 2) / MarioBros.PPM, (rect.getHeight() / 2) / MarioBros.PPM);
+            shape.setAsBox(rect.getWidth() / 2 / MarioBros.PPM, rect.getHeight() / 2 / MarioBros.PPM);
             fdef.shape = shape;
             body.createFixture(fdef);
         }
@@ -47,8 +54,9 @@ public class B2WorldCreator {
 
             body = world.createBody(bdef);
 
-            shape.setAsBox((rect.getWidth() / 2) / MarioBros.PPM, (rect.getHeight() / 2) / MarioBros.PPM);
+            shape.setAsBox(rect.getWidth() / 2 / MarioBros.PPM, rect.getHeight() / 2 / MarioBros.PPM);
             fdef.shape = shape;
+            fdef.filter.categoryBits = MarioBros.OBJECT_BIT;
             body.createFixture(fdef);
         }
 
@@ -56,14 +64,24 @@ public class B2WorldCreator {
         for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-           new Brick(world, map, rect);
+            new Brick(screen, rect);
         }
 
         //create coin bodies/fixtures
         for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            new Coin(world, map, rect);
+            new Coin(screen, rect);
         }
+
+        //create all goombas
+        goombas = new Array<Goomba>();
+        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            goombas.add(new Goomba(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
+        }
+    }
+
+    public Array<Goomba> getGoombas() {
+        return goombas;
     }
 }
